@@ -11,32 +11,34 @@ function App() {
   const [modal, setModal] = useState(false)
 
   // id
-  const [idE, setIdx] = useState(null)
+  const [idx, setIdx] = useState(null)
   const [inpEditName, setinpEditName] = useState("")
   const [inpEditPhone, setInpEditPhone] = useState("")
 
   // input search
   const [search, setSearch] = useState('')
 
+  // input Select
+  const [select, setSelect] = useState("")
 
   // data
   const [data, setData] = useState([
     {
       id: 1,
       name: "Muhammadullo",
-      phone: "+992-233-33-11",
+      phone: "Dushanbe",
       completed: false
     },
     {
       id: 2,
       name: "Hamza",
-      phone: "+992-434-78-11",
+      phone: "Dushanbe",
       completed: false
     },
     {
       id: 3,
       name: "Amir",
-      phone: "+992-783-73-31",
+      phone: "Moscow",
       completed: false
     }
   ])
@@ -82,6 +84,17 @@ function App() {
     setIdx(element.id)
   }
 
+  function editUser() {
+    let newUser = data.map((element) => {
+      if (element.id == idx) {
+        element.name = inpEditName
+        element.phone = inpEditPhone
+      }
+      return element
+    })
+    setData(newUser)
+    setModal(false)
+  }
 
 
 
@@ -99,6 +112,15 @@ function App() {
 
         <input value={phone} onChange={(event) => setPhone(event.target.value)} placeholder='phone.....' className='w-[350px] h-[60px] rounded-[12px] p-[8px] m-[12px] border-black border-solid border-[1px]' />
 
+        {/* select */}
+        <select value={select} onChange={(event) => setSelect(event.target.value)}>
+          <option value="">All</option>
+          <option value="dushanbe">Dushanbe</option>
+          <option value="moscow">Moscow</option>
+
+        </select>
+
+
         <button onClick={() => addUser()} className='w-[150px] h-[55px] rounded-[12px] bg-blue-500 text-[white]  shadow-2xl'>Add New+</button>
       </div>
 
@@ -107,7 +129,9 @@ function App() {
       <div className='w-[98%] m-auto mt-[40px] p-[20px] bg-black text-[white] h-auto '>
         {data.filter((element) => {
           return search.toLocaleLowerCase() === '' ? element : element.name.toLocaleLowerCase().includes(search)
-        }).map((element) => {
+        })
+        .filter((element)=> element.phone.toLocaleLowerCase().trim().includes(select.toLocaleLowerCase().trim()))
+        .map((element) => {
           return (
             <div key={element.id} className="w-[95%] h-[250px] m-[20px] p-[2%] rounded-[12px] border-red-500 border-solid border-[2px]" >
               <h1 className='text-[26px] font-semibold'>{element.id}</h1>
@@ -122,14 +146,16 @@ function App() {
       </div>
 
       {/* dialogEdit */}
-      {modal ? (
-        <div className='w-[250px] absolute top-[30%] left-[30%] h-[150px] bg-red-500'>
-          <input value={inpEditName} onChange={(e) => setinpEditName(e.target.value)} />
-          <input value={inpEditPhone} onChange={(e) => setInpEditPhone(e.target.value)} />
-          <button >Save</button>
-          <button onClick={() => setModal(false)}>Close</button>
-        </div>
-      ) : null}
+      {
+        modal ? (
+          <div className='w-[850px] absolute top-[35%] left-[20%] flex justify-center items-center rounded-[26px] h-[450px] bg-red-500'>
+            <input value={inpEditName} onChange={(e) => setinpEditName(e.target.value)} className='w-[260px] h-[40px] m-[10px]   rounded-[6px] p-[10px]' />
+            <input value={inpEditPhone} onChange={(e) => setInpEditPhone(e.target.value)} className='w-[260px] h-[40px] m-[10px] rounded-[6px] p-[10px]' />
+            <button onClick={() => editUser()} className="w-[120px] h-[40px] bg-blue-500 m-[5px] rounded-[10px] font-bold text-[white]">Save</button>
+            <button onClick={() => setModal(false)} className="w-[120px] h-[40px] bg-blue-500 m-[5px] rounded-[10px] font-bold text-[white]">Close</button>
+          </div>
+        ) : null
+      }
 
 
     </>
