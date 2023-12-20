@@ -64,7 +64,7 @@ function App() {
   }
 
   // completed
-  function comp() {
+  function comp(id) {
     let newData = data.map((element) => {
       if (element.id == id) {
         element.completed = !element.completed
@@ -113,7 +113,7 @@ function App() {
         <input value={phone} onChange={(event) => setPhone(event.target.value)} placeholder='phone.....' className='w-[350px] h-[60px] rounded-[12px] p-[8px] m-[12px] border-black border-solid border-[1px]' />
 
         {/* select */}
-        <select value={select} onChange={(event) => setSelect(event.target.value)}>
+        <select value={select} onChange={(event) => setSelect(event.target.value)} className="w-[150px] h-[50px] border-black border-solid  border-[1px] m-[5px] rounded-[12px]">
           <option value="">All</option>
           <option value="dushanbe">Dushanbe</option>
           <option value="moscow">Moscow</option>
@@ -130,19 +130,19 @@ function App() {
         {data.filter((element) => {
           return search.toLocaleLowerCase() === '' ? element : element.name.toLocaleLowerCase().includes(search)
         })
-        .filter((element)=> element.phone.toLocaleLowerCase().trim().includes(select.toLocaleLowerCase().trim()))
-        .map((element) => {
-          return (
-            <div key={element.id} className="w-[95%] h-[250px] m-[20px] p-[2%] rounded-[12px] border-red-500 border-solid border-[2px]" >
-              <h1 className='text-[26px] font-semibold'>{element.id}</h1>
-              <h1 className='text-[red] text-[36px] font-bold'>{element.name}</h1>
-              <h1 className='text-[white] text-[26px]'>{element.phone}</h1>
-              <button onClick={() => delUser(element.id)} className='w-[150px] h-[55px] rounded-[12px] bg-red-500 m-[20px] text-[22px] font-semibold text-[white]  shadow-2xl'>Delete</button>
-              <button onClick={() => modalOpen(element)} className='w-[150px] h-[55px] rounded-[12px] bg-red-500 m-[20px] text-[22px] font-semibold text-[white]  shadow-2xl'>Edit</button>
-              <input type={'checkbox'} checked={element.completed} />
-            </div>
-          )
-        })}
+          .filter((element) => element.phone.toLocaleLowerCase().trim().includes(select.toLocaleLowerCase().trim()))
+          .map((element) => {
+            return (
+              <div key={element.id} className="w-[95%] h-[250px] m-[20px] p-[2%] rounded-[12px] border-red-500 border-solid border-[2px]" >
+                <h1 className='text-[26px] font-semibold'>{element.id}</h1>
+                <h1 style={{color:element.completed? "red":"yellow"}} className="text-[36px]">{element.name}</h1>
+                <h1 className='text-[white] text-[26px]'>{element.phone}</h1>
+                <button onClick={() => delUser(element.id)} className='w-[150px] h-[55px] rounded-[12px] bg-red-500 m-[20px] text-[22px] font-semibold text-[white]  shadow-2xl'>Delete</button>
+                <button onClick={() => modalOpen(element)} className='w-[150px] h-[55px] rounded-[12px] bg-red-500 m-[20px] text-[22px] font-semibold text-[white]  shadow-2xl'>Edit</button>
+                <input type={'checkbox'} checked={element.completed} onChange={()=>comp(element.id)} />
+              </div>
+            )
+          })}
       </div>
 
       {/* dialogEdit */}
