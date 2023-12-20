@@ -7,8 +7,17 @@ function App() {
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
 
+  // modal
+  const [modal, setModal] = useState(false)
+
+  // id
+  const [idE, setIdx] = useState(null)
+  const [inpEditName, setinpEditName] = useState("")
+  const [inpEditPhone, setInpEditPhone] = useState("")
+
   // input search
   const [search, setSearch] = useState('')
+
 
   // data
   const [data, setData] = useState([
@@ -42,6 +51,7 @@ function App() {
       completed: false
     }
     setData([...data, newUser])
+
   }
 
   // delete
@@ -63,8 +73,23 @@ function App() {
     setData(newData)
   }
 
+
+  //modalOpen
+  function modalOpen(element) {
+    setModal(true);
+    setinpEditName(element.name)
+    setInpEditPhone(element.phone)
+    setIdx(element.id)
+  }
+
+
+  
+
   return (
     <>
+
+
+
 
       <div className='w-[100%] h-[20vh] flex items-center justify-center  shadow-2xl'>
         {/* inputName */}
@@ -89,11 +114,23 @@ function App() {
               <h1 className='text-[red] text-[36px] font-bold'>{element.name}</h1>
               <h1 className='text-[white] text-[26px]'>{element.phone}</h1>
               <button onClick={() => delUser(element.id)} className='w-[150px] h-[55px] rounded-[12px] bg-red-500 m-[20px] text-[22px] font-semibold text-[white]  shadow-2xl'>Delete</button>
+              <button onClick={() => modalOpen(element)} className='w-[150px] h-[55px] rounded-[12px] bg-red-500 m-[20px] text-[22px] font-semibold text-[white]  shadow-2xl'>Edit</button>
               <input type={'checkbox'} checked={element.completed} />
             </div>
           )
         })}
       </div>
+
+      {/* dialogEdit */}
+      {modal ? (
+        <div className='w-[250px] absolute top-[30%] left-[30%] h-[150px] bg-red-500'>
+          <input value={inpEditName} onChange={(e) => setinpEditName(e.target.value)} />
+          <input value={inpEditPhone} onChange={(e) => setInpEditPhone(e.target.value)} />
+          <button >Save</button>
+          <button onClick={() => setModal(false)}>Close</button>
+        </div>
+      ) : null}
+
 
     </>
   )
