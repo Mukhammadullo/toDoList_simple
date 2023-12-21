@@ -53,7 +53,6 @@ function App() {
       completed: false
     }
     setData([...data, newUser])
-
   }
 
   // delete
